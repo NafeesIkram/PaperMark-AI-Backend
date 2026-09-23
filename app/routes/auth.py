@@ -4,6 +4,7 @@ from fastapi import (
     HTTPException,
     Response,
 )
+
 from sqlalchemy.orm import Session
 
 from app.auth import (
@@ -12,19 +13,31 @@ from app.auth import (
     hash_password,
     verify_password,
 )
+
 from app.database import get_db
+
 from app.models import User
+
 from app.schemas import (
     LoginRequest,
     RegisterRequest,
     UserResponse,
 )
 
+
+# =========================================================
+# ROUTER
+# =========================================================
+
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"],
 )
 
+
+# =========================================================
+# REGISTER
+# =========================================================
 
 @router.post(
     "/register",
@@ -35,17 +48,20 @@ def register(
     response: Response,
     db: Session = Depends(get_db),
 ):
+
     existing = db.query(User).filter(
         User.email == data.email.lower()
     ).first()
 
     if existing:
+
         raise HTTPException(
             status_code=400,
             detail="An account with this email already exists.",
         )
 
     if len(data.password) < 8:
+
         raise HTTPException(
             status_code=400,
             detail="Password must be at least 8 characters.",
@@ -60,22 +76,32 @@ def register(
     )
 
     db.add(user)
+
     db.commit()
+
     db.refresh(user)
 
     token = create_token(user.id)
+
+    # -----------------------------------------------------
+    # PRODUCTION AUTH COOKIE
+    # -----------------------------------------------------
 
     response.set_cookie(
         key="papermark_token",
         value=token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True,
+        samesite="none",
         max_age=60 * 60 * 24 * 7,
     )
 
     return user
 
+
+# =========================================================
+# LOGIN
+# =========================================================
 
 @router.post("/login")
 def login(
@@ -83,11 +109,13 @@ def login(
     response: Response,
     db: Session = Depends(get_db),
 ):
+
     user = db.query(User).filter(
         User.email == data.email.lower()
     ).first()
 
     if not user:
+
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password.",
@@ -97,6 +125,7 @@ def login(
         data.password,
         user.password_hash,
     ):
+
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password.",
@@ -104,12 +133,16 @@ def login(
 
     token = create_token(user.id)
 
+    # -----------------------------------------------------
+    # PRODUCTION AUTH COOKIE
+    # -----------------------------------------------------
+
     response.set_cookie(
         key="papermark_token",
         value=token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True,
+        samesite="none",
         max_age=60 * 60 * 24 * 7,
     )
 
@@ -118,16 +151,27 @@ def login(
     }
 
 
+# =========================================================
+# LOGOUT
+# =========================================================
+
 @router.post("/logout")
 def logout(response: Response):
+
     response.delete_cookie(
-        key="papermark_token"
+        key="papermark_token",
+        secure=True,
+        samesite="none",
     )
 
     return {
         "message": "Logged out."
     }
 
+
+# =========================================================
+# CURRENT USER
+# =========================================================
 
 @router.get(
     "/me",
@@ -138,4 +182,5 @@ def me(
         get_current_user
     ),
 ):
+
     return current_user
