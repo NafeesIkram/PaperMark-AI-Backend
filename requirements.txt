@@ -7,3 +7,4 @@ python-jose[cryptography]
 bcrypt
 pydantic[email]
 python-multipart
+groq
