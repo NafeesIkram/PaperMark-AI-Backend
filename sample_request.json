@@ -1,0 +1,46 @@
+{
+  "title": "Managerial Accounting Midterm",
+  "course": "Managerial Accounting",
+  "totalMarks": 15,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is contribution margin?",
+      "marks": 5,
+      "answer": "Contribution margin is sales revenue minus variable costs.",
+      "evaluationMethod": "semantic",
+      "rubricPoints": []
+    },
+    {
+      "id": 2,
+      "question": "State the four functions of management.",
+      "marks": 10,
+      "answer": "The four functions are planning, organizing, leading and controlling.",
+      "evaluationMethod": "rubric",
+      "rubricPoints": [
+        {"description": "Planning", "marks": 2.5},
+        {"description": "Organizing", "marks": 2.5},
+        {"description": "Leading", "marks": 2.5},
+        {"description": "Controlling", "marks": 2.5}
+      ]
+    }
+  ],
+  "markingRules": {
+    "semanticMeaning": true,
+    "keywordCheck": true,
+    "formulaCheck": true,
+    "instructorReview": true,
+    "customRules": []
+  },
+  "students": [
+    {
+      "studentId": "2026-001",
+      "studentName": "Rahim Ahmed",
+      "answers": {
+        "1": "It is the amount remaining from sales after variable costs are deducted.",
+        "2": "Planning, organizing and controlling are the functions of management."
+      }
+    }
+  ],
+  "model": "gemini-2.5-flash"
+}
