@@ -1,4 +1,14 @@
-# PaperMark AI Backend
+<div align="left">
+  <img src="Screenshots/logo.png" alt="PaperMark AI Logo" width="55" align="left" style="margin-right: 15px;">
+
+  <h1>
+    PaperMark AI Backend
+    <img src="https://img.shields.io/badge/version-v1.0-green" alt="v1.0">
+    <img src="https://img.shields.io/badge/status-Beta-orange" alt="Beta">
+  </h1>
+</div>
+
+<br clear="left">
 
 PaperMark AI Backend is the backend service for PaperMark AI, an AI-assisted assignment evaluation platform for instructors.
 
